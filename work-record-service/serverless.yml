@@ -1,16 +1,3 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
-
 service: work-record-service
 # app and org for use with dashboard.serverless.com
 #app: your-app-name
@@ -18,16 +5,15 @@ service: work-record-service
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '2'
+frameworkVersion: "2"
 
 provider:
   name: aws
   runtime: nodejs12.x
   lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-west-2
 
-# you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -100,14 +86,37 @@ functions:
 #    environment:
 #      variable2: value2
 
-# you can add CloudFormation resource templates here
-#resources:
-#  Resources:
-#    NewResource:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: my-new-bucket
-#  Outputs:
-#     NewOutput:
-#       Description: "Description for the output"
-#       Value: "Some output value"
+resources:
+  Resources:
+    ServerlessDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "work-record-log"
+        AttributeDefinitions:
+          - AttributeName: "date"
+            AttributeType: "S"
+          - AttributeName: "startTime"
+            AttributeType: "S"
+          - AttributeName: "content"
+            AttributeType: "S"
+          - AttributeName: "category"
+            AttributeType: "S"
+        KeySchema:
+        - AttributeName: "date"
+          KeyType: "HASH"
+        - AttributeName: "startTime"
+          KeyType: "RANGE"
+        BillingMode: "PAY_PER_REQUEST"
+        GlobalSecondaryIndexes:
+          - IndexName: "CategoryIndex"
+            KeySchema:
+            - AttributeName: "category"
+              KeyType: "HASH"
+            - AttributeName: "content"
+              KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+  Outputs:
+    NewOutput:
+      Description: "Description for the output"
+      Value: "Some output value"
