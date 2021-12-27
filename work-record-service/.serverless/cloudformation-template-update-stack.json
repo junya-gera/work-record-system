@@ -71,10 +71,10 @@
         }
       }
     },
-    "HelloLogGroup": {
+    "PutRecordLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/work-record-service-dev-hello"
+        "LogGroupName": "/aws/lambda/work-record-service-dev-putRecord"
       }
     },
     "IamRoleLambdaExecution": {
@@ -154,18 +154,18 @@
         }
       }
     },
-    "HelloLambdaFunction": {
+    "PutRecordLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/work-record-service/dev/1640613663824-2021-12-27T14:01:03.824Z/work-record-service.zip"
+          "S3Key": "serverless/work-record-service/dev/1640617341480-2021-12-27T15:02:21.480Z/work-record-service.zip"
         },
-        "Handler": "handler.hello",
+        "Handler": "handler.putRecord",
         "Runtime": "nodejs12.x",
-        "FunctionName": "work-record-service-dev-hello",
+        "FunctionName": "work-record-service-dev-putRecord",
         "MemorySize": 1024,
         "Timeout": 6,
         "Role": {
@@ -176,17 +176,17 @@
         }
       },
       "DependsOn": [
-        "HelloLogGroup"
+        "PutRecordLogGroup"
       ]
     },
-    "HelloLambdaVersionCZPWhqx2eqLTBvD75IbnaeaRGoA7an6FgK3J673OCH0": {
+    "PutRecordLambdaVersionOIUHW8OX2swaV4XrsnPZJi54DZCXx7DYR03tweKHio": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "HelloLambdaFunction"
+          "Ref": "PutRecordLambdaFunction"
         },
-        "CodeSha256": "I5lx9rW4OGWkMuaCd5khR70iPK8UbCZ3eYacPX6CiJ8="
+        "CodeSha256": "1AQS8XvJIB0mbDtl6hndiOacYvF/SZ92oYqnPosTkgo="
       }
     },
     "ServerlessDynamoDbTable": {
@@ -252,13 +252,13 @@
         "Name": "sls-work-record-service-dev-ServerlessDeploymentBucketName"
       }
     },
-    "HelloLambdaFunctionQualifiedArn": {
+    "PutRecordLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "HelloLambdaVersionCZPWhqx2eqLTBvD75IbnaeaRGoA7an6FgK3J673OCH0"
+        "Ref": "PutRecordLambdaVersionOIUHW8OX2swaV4XrsnPZJi54DZCXx7DYR03tweKHio"
       },
       "Export": {
-        "Name": "sls-work-record-service-dev-HelloLambdaFunctionQualifiedArn"
+        "Name": "sls-work-record-service-dev-PutRecordLambdaFunctionQualifiedArn"
       }
     },
     "NewOutput": {
