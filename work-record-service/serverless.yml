@@ -13,6 +13,16 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: us-west-2
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+      - dynamodb:Query
+      - dynamodb:Scan
+      - dynamodb:GetItem
+      - dynamodb:PutItem
+      - dynamodb:UpdateItem
+    Resource:
+      - "arn:aws:dynamodb:us-west-2:975486960068:table/work-record-log"
 
 
 # you can add statements to the Lambda function's IAM Role here
@@ -116,7 +126,10 @@ resources:
               KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
-  Outputs:
-    NewOutput:
-      Description: "Description for the output"
-      Value: "Some output value"
+
+plugins:
+  - serverless-layers
+
+custom:
+  serverless-layers:
+    layersDeploymentBucket: work-record-package-deploy-20211229

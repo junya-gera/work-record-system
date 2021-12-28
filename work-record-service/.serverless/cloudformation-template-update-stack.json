@@ -133,6 +133,17 @@
                       "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/work-record-service-dev*:*:*"
                     }
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:Query",
+                    "dynamodb:Scan",
+                    "dynamodb:GetItem",
+                    "dynamodb:PutItem",
+                    "dynamodb:UpdateItem"
+                  ],
+                  "Resource": "arn:aws:dynamodb:us-east-1:*:table/work-record-log"
                 }
               ]
             }
@@ -161,7 +172,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/work-record-service/dev/1640617341480-2021-12-27T15:02:21.480Z/work-record-service.zip"
+          "S3Key": "serverless/work-record-service/dev/1640714509535-2021-12-28T18:01:49.535Z/work-record-service.zip"
         },
         "Handler": "handler.putRecord",
         "Runtime": "nodejs12.x",
@@ -173,20 +184,23 @@
             "IamRoleLambdaExecution",
             "Arn"
           ]
-        }
+        },
+        "Layers": [
+          "arn:aws:lambda:us-west-2:975486960068:layer:work-record-service-dev-nodejs-default:3"
+        ]
       },
       "DependsOn": [
         "PutRecordLogGroup"
       ]
     },
-    "PutRecordLambdaVersionOIUHW8OX2swaV4XrsnPZJi54DZCXx7DYR03tweKHio": {
+    "PutRecordLambdaVersion0b77jCy1vbYpSkyxIZtt15k9bZCqHFZbjHhXLaHpU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "PutRecordLambdaFunction"
         },
-        "CodeSha256": "1AQS8XvJIB0mbDtl6hndiOacYvF/SZ92oYqnPosTkgo="
+        "CodeSha256": "yWY0++KZkwUJjCmLjDfdZDOteNMDPwTeEefpzieWlvY="
       }
     },
     "ServerlessDynamoDbTable": {
@@ -255,15 +269,17 @@
     "PutRecordLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "PutRecordLambdaVersionOIUHW8OX2swaV4XrsnPZJi54DZCXx7DYR03tweKHio"
+        "Ref": "PutRecordLambdaVersion0b77jCy1vbYpSkyxIZtt15k9bZCqHFZbjHhXLaHpU"
       },
       "Export": {
         "Name": "sls-work-record-service-dev-PutRecordLambdaFunctionQualifiedArn"
       }
     },
-    "NewOutput": {
-      "Description": "Description for the output",
-      "Value": "Some output value"
+    "WorkDashrecordDashserviceDashdevDashnodejsDashdefaultLambdaLayerQualifiedArn": {
+      "Value": "arn:aws:lambda:us-west-2:975486960068:layer:work-record-service-dev-nodejs-default:3",
+      "Export": {
+        "Name": "WorkDashrecordDashserviceDashdevDashnodejsDashdefaultLambdaLayerQualifiedArn"
+      }
     }
   }
 }
