@@ -172,7 +172,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/work-record-service/dev/1640772257888-2021-12-29T10:04:17.888Z/work-record-service.zip"
+          "S3Key": "serverless/work-record-service/dev/1640794865324-2021-12-29T16:21:05.324Z/work-record-service.zip"
         },
         "Handler": "handler.putRecord",
         "Runtime": "nodejs12.x",
@@ -193,14 +193,136 @@
         "PutRecordLogGroup"
       ]
     },
-    "PutRecordLambdaVersion73srif5JL5EmU0Ni7P5A8VjSZqYFksb0owOhM6T4k": {
+    "PutRecordLambdaVersionF1BPPaGMurR8Y9uN5ntnFOBRqpkA3LBZIbHDySFNwWU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "PutRecordLambdaFunction"
         },
-        "CodeSha256": "8FPv7RK4s1Wu7DcvWGmoXVExTPQzvgCNhh2kNZFV+8I="
+        "CodeSha256": "OuwRv7o58kqskytCRfeF97XLx/3f63gaOm2K3xOX9TE="
+      }
+    },
+    "ApiGatewayRestApi": {
+      "Type": "AWS::ApiGateway::RestApi",
+      "Properties": {
+        "Name": "dev-work-record-service",
+        "EndpointConfiguration": {
+          "Types": [
+            "EDGE"
+          ]
+        },
+        "Policy": ""
+      }
+    },
+    "ApiGatewayResourcePutDashrecord": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "put-record",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodPutDashrecordPost": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "POST",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourcePutDashrecord"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "PutRecordLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "PutRecordLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayDeployment1640794858369": {
+      "Type": "AWS::ApiGateway::Deployment",
+      "Properties": {
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "StageName": "dev"
+      },
+      "DependsOn": [
+        "ApiGatewayMethodPutDashrecordPost"
+      ]
+    },
+    "PutRecordLambdaPermissionApiGateway": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "FunctionName": {
+          "Fn::GetAtt": [
+            "PutRecordLambdaFunction",
+            "Arn"
+          ]
+        },
+        "Action": "lambda:InvokeFunction",
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:",
+              {
+                "Ref": "AWS::Partition"
+              },
+              ":execute-api:",
+              {
+                "Ref": "AWS::Region"
+              },
+              ":",
+              {
+                "Ref": "AWS::AccountId"
+              },
+              ":",
+              {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "/*/*"
+            ]
+          ]
+        }
       }
     },
     "ServerlessDynamoDbTable": {
@@ -276,10 +398,36 @@
     "PutRecordLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "PutRecordLambdaVersion73srif5JL5EmU0Ni7P5A8VjSZqYFksb0owOhM6T4k"
+        "Ref": "PutRecordLambdaVersionF1BPPaGMurR8Y9uN5ntnFOBRqpkA3LBZIbHDySFNwWU"
       },
       "Export": {
         "Name": "sls-work-record-service-dev-PutRecordLambdaFunctionQualifiedArn"
+      }
+    },
+    "ServiceEndpoint": {
+      "Description": "URL of the service endpoint",
+      "Value": {
+        "Fn::Join": [
+          "",
+          [
+            "https://",
+            {
+              "Ref": "ApiGatewayRestApi"
+            },
+            ".execute-api.",
+            {
+              "Ref": "AWS::Region"
+            },
+            ".",
+            {
+              "Ref": "AWS::URLSuffix"
+            },
+            "/dev"
+          ]
+        ]
+      },
+      "Export": {
+        "Name": "sls-work-record-service-dev-ServiceEndpoint"
       }
     },
     "WorkDashrecordDashserviceDashdevDashnodejsDashdefaultLambdaLayerQualifiedArn": {

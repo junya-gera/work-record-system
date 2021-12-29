@@ -21,6 +21,10 @@ provider:
 functions:
   putRecord:
     handler: handler.putRecord
+    events:
+      - http:
+          path: /put-record
+          method: post
 
 resources:
   Resources:
