@@ -116,7 +116,9 @@ resources:
           KeyType: "HASH"
         - AttributeName: "startTime"
           KeyType: "RANGE"
-        BillingMode: "PAY_PER_REQUEST"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
         GlobalSecondaryIndexes:
           - IndexName: "CategoryIndex"
             KeySchema:
@@ -126,6 +128,9 @@ resources:
               KeyType: "RANGE"
             Projection:
               ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
 
 plugins:
   - serverless-layers

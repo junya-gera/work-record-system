@@ -20,7 +20,7 @@
             "dynamodb:PutItem",
             "dynamodb:UpdateItem"
           ],
-          "Resource": "arn:aws:dynamodb:us-east-1:*:table/work-record-log"
+          "Resource": "arn:aws:dynamodb:us-west-2:975486960068:table/work-record-log"
         }
       ],
       "versionFunctions": true,
@@ -190,7 +190,7 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/work-record-service/dev/1640714509535-2021-12-28T18:01:49.535Z/work-record-service.zip"
+                "S3Key": "serverless/work-record-service/dev/1640772257888-2021-12-29T10:04:17.888Z/work-record-service.zip"
               },
               "Handler": "handler.putRecord",
               "Runtime": "nodejs12.x",
@@ -211,14 +211,14 @@
               "PutRecordLogGroup"
             ]
           },
-          "PutRecordLambdaVersion0b77jCy1vbYpSkyxIZtt15k9bZCqHFZbjHhXLaHpU": {
+          "PutRecordLambdaVersion73srif5JL5EmU0Ni7P5A8VjSZqYFksb0owOhM6T4k": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "PutRecordLambdaFunction"
               },
-              "CodeSha256": "yWY0++KZkwUJjCmLjDfdZDOteNMDPwTeEefpzieWlvY="
+              "CodeSha256": "8FPv7RK4s1Wu7DcvWGmoXVExTPQzvgCNhh2kNZFV+8I="
             }
           },
           "ServerlessDynamoDbTable": {
@@ -253,7 +253,10 @@
                   "KeyType": "RANGE"
                 }
               ],
-              "BillingMode": "PAY_PER_REQUEST",
+              "ProvisionedThroughput": {
+                "ReadCapacityUnits": 1,
+                "WriteCapacityUnits": 1
+              },
               "GlobalSecondaryIndexes": [
                 {
                   "IndexName": "CategoryIndex",
@@ -269,6 +272,10 @@
                   ],
                   "Projection": {
                     "ProjectionType": "ALL"
+                  },
+                  "ProvisionedThroughput": {
+                    "ReadCapacityUnits": 1,
+                    "WriteCapacityUnits": 1
                   }
                 }
               ]
@@ -287,7 +294,7 @@
           "PutRecordLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "PutRecordLambdaVersion0b77jCy1vbYpSkyxIZtt15k9bZCqHFZbjHhXLaHpU"
+              "Ref": "PutRecordLambdaVersion73srif5JL5EmU0Ni7P5A8VjSZqYFksb0owOhM6T4k"
             },
             "Export": {
               "Name": "sls-work-record-service-dev-PutRecordLambdaFunctionQualifiedArn"
@@ -407,7 +414,7 @@
         "timeout": 6,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "PutRecordLambdaVersion0b77jCy1vbYpSkyxIZtt15k9bZCqHFZbjHhXLaHpU"
+        "versionLogicalId": "PutRecordLambdaVersion73srif5JL5EmU0Ni7P5A8VjSZqYFksb0owOhM6T4k"
       }
     },
     "resources": {
@@ -444,7 +451,10 @@
                 "KeyType": "RANGE"
               }
             ],
-            "BillingMode": "PAY_PER_REQUEST",
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": 1,
+              "WriteCapacityUnits": 1
+            },
             "GlobalSecondaryIndexes": [
               {
                 "IndexName": "CategoryIndex",
@@ -460,6 +470,10 @@
                 ],
                 "Projection": {
                   "ProjectionType": "ALL"
+                },
+                "ProvisionedThroughput": {
+                  "ReadCapacityUnits": 1,
+                  "WriteCapacityUnits": 1
                 }
               }
             ]
@@ -504,7 +518,7 @@
   },
   "package": {
     "individually": false,
-    "artifactDirectoryName": "serverless/work-record-service/dev/1640714509535-2021-12-28T18:01:49.535Z",
+    "artifactDirectoryName": "serverless/work-record-service/dev/1640772257888-2021-12-29T10:04:17.888Z",
     "artifact": "work-record-service.zip"
   }
 }
