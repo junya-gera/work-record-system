@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.scss';
 import MainStyle from './index.module.css';
 import Modal from '../Modal';
 import Timer from '../Timer';

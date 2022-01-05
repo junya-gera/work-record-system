@@ -1,4 +1,5 @@
 import React from 'react';
+import './style.scss';
 import RecordButtonStyle from './index.module.css';
 
 const RecordButton = () => {
