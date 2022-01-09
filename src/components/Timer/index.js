@@ -1,6 +1,5 @@
 import React from 'react';
-import './style.scss';
-import TimerStyle from './index.module.css';
+import TimerStyle from './index.module.scss';
 
 const Timer = () => {
   return (

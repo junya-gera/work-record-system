@@ -1,6 +1,5 @@
 import React from 'react';
-import './style.scss';
-import RecordHistoryButtonStyle from './index.module.css';
+import RecordHistoryButtonStyle from './index.module.scss';
 
 const RecordHistoryButton = () => {
   return (

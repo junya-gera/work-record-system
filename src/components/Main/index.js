@@ -1,6 +1,5 @@
 import React from 'react';
-import './style.scss';
-import MainStyle from './index.module.css';
+import MainStyle from './index.module.scss';
 import Modal from '../Modal';
 import Timer from '../Timer';
 import RecordButton from '../RecordButton';
