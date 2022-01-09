@@ -1,0 +1,70 @@
+service: work-record-service
+frameworkVersion: "2"
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  lambdaHashingVersion: 20201221
+  stage: dev
+  region: us-west-2
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+      Resource:
+        - "arn:aws:dynamodb:us-west-2:975486960068:table/work-record-log"
+
+functions:
+  putRecord:
+    handler: handler.putRecord
+    events:
+      - http:
+          path: /put-record
+          method: post
+
+resources:
+  Resources:
+    ServerlessDynamoDbTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: "work-record-log"
+        AttributeDefinitions:
+          - AttributeName: "date"
+            AttributeType: "S"
+          - AttributeName: "startTime"
+            AttributeType: "S"
+          - AttributeName: "content"
+            AttributeType: "S"
+          - AttributeName: "category"
+            AttributeType: "S"
+        KeySchema:
+        - AttributeName: "date"
+          KeyType: "HASH"
+        - AttributeName: "startTime"
+          KeyType: "RANGE"
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        GlobalSecondaryIndexes:
+          - IndexName: "CategoryIndex"
+            KeySchema:
+            - AttributeName: "category"
+              KeyType: "HASH"
+            - AttributeName: "content"
+              KeyType: "RANGE"
+            Projection:
+              ProjectionType: "ALL"
+            ProvisionedThroughput:
+              ReadCapacityUnits: 1
+              WriteCapacityUnits: 1
+
+plugins:
+  - serverless-layers
+
+custom:
+  serverless-layers:
+    layersDeploymentBucket: work-record-package-deploy-20211229

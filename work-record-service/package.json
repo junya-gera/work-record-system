@@ -1,0 +1,12 @@
+{
+  "name": "work-record-service",
+  "description": "",
+  "version": "0.1.0",
+  "dependencies": {
+    "aws-sdk": "^2.1048.0",
+    "luxon": "^2.2.0"
+  },
+  "devDependencies": {
+    "serverless-layers": "^2.5.1"
+  }
+}
